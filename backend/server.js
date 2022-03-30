@@ -1,26 +1,47 @@
-require("dotenv").config(); // ALLOWS ENVIRONMENT VARIABLES TO BE SET ON PROCESS.ENV SHOULD BE AT TOP
+const http = require('http');
+const app = require('./app');
 
-const express = require("express");
-const app = express();
-const db = require("./config/db")
+const normalizePort = val => {
+  const port = parseInt(val, 10);
 
-// Middleware
-app.use(express.json()); // parse json bodies in the request object
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+};
+const port = normalizePort(process.env.PORT || '3001');
+app.set('port', port);
 
-// Redirect requests to endpoint starting with /posts to postRoutes.js
-// app.use("/posts", require("./routes/postRoutes"));
+const errorHandler = error => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges.');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use.');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
 
-// Global Error Handler. IMPORTANT function params MUST start with err
-app.use((err, req, res, next) => {
-  console.log(err.stack);
-  console.log(err.name);
-  console.log(err.code);
+const server = http.createServer(app);
 
-  res.status(500).json({
-    message: "Something went rely wrong",
-  });
+server.on('error', errorHandler);
+server.on('listening', () => {
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+  console.log('Listening on ' + bind);
 });
 
-// Listen on pc port
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
+server.listen(port);
