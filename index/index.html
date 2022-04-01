@@ -60,8 +60,9 @@
             template: `
                 <form @submit.prevent="handleSubmit">
                     <h1>{{ title }}</h1>
-                    <custom-input v-model="password"  label="Password"/>
-                    <custom-input  v-model="email":modelValue="email" label="Enter Email"/>
+                    <p v-for="str in  inputs" key="">{{str}}</p>
+                    <custom-input v-model="password"  label="PasswordLabel"/>
+                    <custom-input  v-model="email":modelValue="email" label="Enter Email Label"/>
                     <button class="button">Log in</button>
                 </form>
             `,
@@ -69,6 +70,11 @@
             date(){
                 return{
                     title:'Login Form',
+                    inputs:[
+                        'email',
+                        'password',
+                        'name'
+                    ],
                     email:'',
                     password:'',
                     emailLabel: 'Email',
@@ -93,7 +99,7 @@
             computed:{
                 inputValue:{
                     get(){
-                        this.modelValue
+                        return this.modelValue
                     },
                     set(value){
                         console.log(value)
@@ -102,11 +108,11 @@
                     }
                 }
             },
-            data(){
-                return{
-                    inputValue:''
-                }
-            }
+            //data(){
+            //    return{
+            //        inputValue:''
+            //    }
+            //}
         })
         app.mount('#app')
     </script>

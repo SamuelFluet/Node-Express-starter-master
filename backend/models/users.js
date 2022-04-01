@@ -3,7 +3,7 @@ const db = require("../config/db");
 class User {
   constructor(email, password, username) {
     this.email= email;
-    this.password = paswword;
+    this.password = password;
     this.username = username;
   }
 
@@ -30,8 +30,8 @@ class User {
     return db.execute(sql);
   }
 
-  static findOne(email) {
-    let sql = `SELECT * FROM posts WHERE email = ${email};`;
+  static findByEmail(email) {
+    let sql = `SELECT * FROM users WHERE email = "${email}";`;
 
     return db.execute(sql);
   }
