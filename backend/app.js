@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const userRouter = require('./routes/auth')
+const postRouter = require('./routes/post')
 
 
 app.use((req, res, next) => {
@@ -13,8 +14,6 @@ app.use((req, res, next) => {
 
 app.use(express.json())
 app.use("/api/auth", userRouter)
-app.use("/", (req, res)=>{
-    res.json("hello")
-})
+app.use("/api/post", postRouter)
 
 module.exports = app;

@@ -1,29 +1,18 @@
 const db = require("../config/db");
 
 class Post {
-  constructor(title, body) {
-    this.title = title;
-    this.body = body;
-  }
-
-  save() {
-    let d = new Date();
-    let yyyy = d.getFullYear();
-    let mm = d.getMonth() + 1;
-    let dd = d.getDate();
-
-    let createdAtDate = `${yyyy}-${mm}-${dd}`;
-
+ 
+  static save(post) {
     let sql = `
-    INSERT INTO posts(
-      title,
-      body,
-      created_at
+    INSERT INTO post(
+      content,
+      imageurl,
+      userid
     )
     VALUES(
-      '${this.title}',
-      '${this.body}',
-      '${createdAtDate}'
+      '${post.content}',
+      '${post.imageurl}',
+      '${post.userid}'
     )
     `;
 
@@ -31,16 +20,23 @@ class Post {
   }
 
   static findAll() {
-    let sql = "SELECT * FROM posts;";
+    let sql = "SELECT * FROM post;";
 
     return db.execute(sql);
   }
 
   static findById(id) {
-    let sql = `SELECT * FROM posts WHERE id = ${id};`;
+    let sql = `SELECT * FROM post WHERE id = "${id}";`;
 
     return db.execute(sql);
   }
+
+  static deleteOne(id){
+    let sql = `DELETE FROM post WHERE id = "${id}";`;
+
+    return db.execute(sql);
+  }
+
 }
 
 module.exports = Post;

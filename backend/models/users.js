@@ -35,6 +35,11 @@ class User {
 
     return db.execute(sql);
   }
+  static findOne(id){
+    let sql = `SELECT * FROM users WHERE id = "${id}";`;
+
+    return db.execute(sql);
+  }
 }
 
 module.exports = User;
