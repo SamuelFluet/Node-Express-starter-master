@@ -27,13 +27,16 @@ exports.login = async (req, res, next) => {
   try {
     let email = req.body.email;
     let password = req.body.password;
-
+    //vérifier si m'email existe et le stocker dans user
     let result = await User.findByEmail(email);
     const user = result[0][0]
+    // comparer si le mdp est le même
     bcrypt.compare(password, user.password).then((valid)=>{
+      // valid est false si le mdp est incorrect
       if(!valid){
         res.status(401).json("mot de passe incorrect")
       }else{
+        // renvoie une réponse où il ya cet objet
         res.status(200).json({
           user:user,
           token: jwt.sign({

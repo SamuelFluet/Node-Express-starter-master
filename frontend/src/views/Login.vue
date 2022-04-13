@@ -19,7 +19,12 @@ export default {
     },
     methods: {
         handleSubmit(){
-            console.log(this.email, this.password)
+            this.$store.dispatch("logIn", {
+                email:this.email,
+                password:this.password
+            }).then(()=>{
+                this.$router.push("/")
+            })
         }
     },
 }
